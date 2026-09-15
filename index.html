@@ -2,7 +2,7 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PolyFight — Dropzone</title><link rel="stylesheet" href="style.css"></head>
 <body>
-<div id="loading" aria-live="polite"><div class="load-card"><div class="logo">POLY<span>FIGHT</span></div><div class="load-bar"><i></i></div><small id="load-status">DROPZONE // SEASON ZERO</small><div id="load-error" class="load-error" hidden>Starting game…</div></div></div>
+<div id="loading" aria-live="polite"><div class="load-card"><div class="logo">POLY<span>FIGHT</span></div><div class="load-bar"><i></i></div><small id="load-status">DROPZONE // SEASON ZERO</small></div></div>
 <canvas id="game"></canvas>
 <div id="hud">
 <div class="top-left"><div class="player-card"><div class="avatar">P</div><div><b>POLY PLAYER</b><div class="bars"><i id="hp"></i><i id="shield"></i></div><div class="tiny-stats"><span>ELIMS <b id="kills">0</b></span><span>AMMO <b id="ammo">30/30</b></span></div></div></div></div>
@@ -13,7 +13,18 @@
 <div class="bottom-right"><div class="materials"><b>WOOD</b><span id="wood">999</span><b>BRICK</b><span id="brick">500</span><b>METAL</b><span id="metal">250</span></div><div class="hotbar" id="hotbar"><div class="slot active">1<div class="piece wall"></div><small>WALL</small></div><div class="slot">2<div class="piece floor"></div><small>FLOOR</small></div><div class="slot">3<div class="piece ramp"></div><small>RAMP</small></div><div class="slot">4<div class="piece cone"></div><small>CONE</small></div><div class="slot gun">5<div>✦</div><small>PULSE</small></div></div></div>
 <div id="editPanel" class="edit-panel hidden"><strong>EDIT MODE</strong><span id="selectedCount">0 TILES</span><small>DRAG TO SELECT · RELEASE TO CONFIRM · RMB RESET</small></div><div id="toast"></div></div>
 <script>
-(function(){const l=document.getElementById('loading'),s=document.getElementById('load-status'),e=document.getElementById('load-error');window.__polyfightStarted=false;window.__hidePolyFightLoader=function(){window.__polyfightStarted=true;if(!l)return;l.classList.add('loaded');setTimeout(()=>l.remove(),450)};window.__polyfightLoadFailed=function(m){if(s)s.textContent='DROPZONE // RECOVERY';if(e){e.hidden=false;e.textContent=m||'Game engine failed to start. Refresh to retry.'}if(l)l.classList.add('load-failed')};window.addEventListener('error',x=>{if(!window.__polyfightStarted&&x.filename&&/game\.js|three/i.test(x.filename)){window.__polyfightLoadFailed('Game engine failed to start. Refresh to retry.');setTimeout(window.__hidePolyFightLoader,900)}});window.addEventListener('unhandledrejection',()=>{if(!window.__polyfightStarted){window.__polyfightLoadFailed('Game engine failed to start. Refresh to retry.');setTimeout(window.__hidePolyFightLoader,900)}});setTimeout(()=>{if(!window.__polyfightStarted)window.__hidePolyFightLoader()},2200)})();
+(function(){
+  const loader=document.getElementById('loading');
+  const hide=()=>{if(loader){loader.style.setProperty('display','none','important');loader.remove();}};
+  window.__hidePolyFightLoader=hide;
+  window.__polyfightStarted=false;
+  window.addEventListener('error',()=>setTimeout(hide,500),true);
+  window.addEventListener('unhandledrejection',()=>setTimeout(hide,500),true);
+  // Absolute safety net: nothing in the game can keep the boot overlay alive.
+  setTimeout(hide,1800);
+})();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js" onerror="window.__polyfightLoadFailed('Three.js failed to load. Refresh to retry.');setTimeout(window.__hidePolyFightLoader,900)"></script><script src="game.js"></script><script>setTimeout(()=>window.__hidePolyFightLoader&&window.__hidePolyFightLoader(),900);</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js?v=180"></script>
+<script src="game.js?v=20260915-2"></script>
+<script>window.__hidePolyFightLoader&&window.__hidePolyFightLoader();</script>
 </body></html>
